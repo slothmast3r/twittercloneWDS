@@ -8,7 +8,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node app.ts",
     "start_old": "next start"
   },
   "dependencies": {
