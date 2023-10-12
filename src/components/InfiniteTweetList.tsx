@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { VscHeart, VscHeartFilled } from "react-icons/vsc";
 import { IconHoverEffect } from "./IconHoverEffect";
 import { api } from "~/utils/api";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type Tweet = {
   id: string;
@@ -35,7 +36,7 @@ export function InfiniteTweetList({
   hasMore = false,
 }: InfiniteTweetListProps) {
   if (isError) return <p>Error</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpinner/>;
   if (tweets == undefined || tweets == null || tweets.length === 0 )
     return (
       <h2 className="text-2x1 my-4 text-center text-gray-500">No tweets</h2>
@@ -47,7 +48,7 @@ export function InfiniteTweetList({
         dataLength={tweets.length}
         next={fetchNewTweets}
         hasMore={hasMore}
-        loader={<p>Loading...</p>}
+        loader={<LoadingSpinner/>}
       >
         {tweets.map((tweet) => (
           <TweetCard key={tweet.id} {...tweet}></TweetCard>
