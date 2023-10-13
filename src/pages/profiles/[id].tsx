@@ -52,7 +52,7 @@ const ProfilePage: NextPage<
   return (
     <>
       <Head>
-        <title>{`Twitter Clone ${profile.name}`}</title>
+        <title>{`Ai For Education Hub ${profile.name}`}</title>
       </Head>
       <header className="sticky top-0 z-10 flex items-center border-b bg-white px-4 py-2">
         <Link href=".." className="mr-2">
