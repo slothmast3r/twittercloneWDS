@@ -1,13 +1,5 @@
-import next from "next";
-import {
-  createTRPCContext,
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { inferAsyncReturnType } from "@trpc/server";
-import { Prisma } from "@prisma/client";
 
 export const profileRouter = createTRPCRouter({
   getById: publicProcedure
@@ -45,25 +37,24 @@ export const profileRouter = createTRPCRouter({
         where: { id: userId, followers: { some: { id: currentUserId } } },
       });
 
-      let addedFollow
+      let addedFollow;
 
-      if(existingFollow == null){
+      if (existingFollow == null) {
         await ctx.db.user.update({
           where: { id: userId },
           data: { followers: { connect: { id: currentUserId } } },
-        })
-        addedFollow = true
-      }else{
+        });
+        addedFollow = true;
+      } else {
         await ctx.db.user.update({
           where: { id: userId },
           data: { followers: { connect: { id: currentUserId } } },
-        })
-        addedFollow = false
+        });
+        addedFollow = false;
       }
-      void ctx.revalidateSSG?.(`/profile/${userId}`)
-      void ctx.revalidateSSG?.(`/profile/${currentUserId}`)
+      void ctx.revalidateSSG?.(`/profile/${userId}`);
+      void ctx.revalidateSSG?.(`/profile/${currentUserId}`);
 
-
-      return {addedFollow}
+      return { addedFollow };
     }),
 });

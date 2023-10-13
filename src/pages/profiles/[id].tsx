@@ -1,6 +1,5 @@
 import type {
   GetStaticPaths,
-  GetStaticPathsContext,
   GetStaticPropsContext,
   InferGetServerSidePropsType,
   NextPage,
@@ -46,7 +45,7 @@ const ProfilePage: NextPage<
     },
   });
 
-  if (profile == null || profile.name == null) {
+  if (!profile?.name) {
     return <ErrorPage statusCode={404} />;
   }
 
@@ -85,7 +84,7 @@ const ProfilePage: NextPage<
           tweets={tweets.data?.pages.flatMap((page) => page.tweets)}
           isError={tweets.isError}
           isLoading={tweets.isLoading}
-          hasMore={tweets.hasNextPage || false}
+          hasMore={tweets.hasNextPage ?? false}
           fetchNewTweets={tweets.fetchNextPage}
         />
       </main>
@@ -119,7 +118,7 @@ export async function getStaticProps(
     };
   }
   const ssg = ssgHelper();
-  ssg.profile.getById.prefetch({ id });
+  await ssg.profile.getById.prefetch({ id });
   return {
     props: {
       id,
